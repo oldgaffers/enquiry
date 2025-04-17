@@ -18,24 +18,10 @@ jobs:
       - name: install python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13' 
-      - name: install poetry
-        uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: '1.6.1'
-      - name: test
-        env:
-          AWS_DEFAULT_REGION: eu-west-1
-        run: |
-          poetry install --with dev
-          poetry run python -m pytest
+          python-version: '3.13'
       - name: package
         run: |
-          poetry run pip install -t dist .
-          cd dist
-          zip -r ../lambda.zip * --exclude enquiry\* || true
-          cd gold_diff
-          zip ../../lambda.zip *.py --exclude __init__.py
+          zip lambda.zip lambda_function.py || true
       - name: cred
         uses: aws-actions/configure-aws-credentials@v4
         with:
